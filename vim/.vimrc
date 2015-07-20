@@ -51,15 +51,6 @@ execute pathogen#infect()
 syntax on
 filetype plugin indent on
 
-" NERDTree setup
-let NERDTreeDirArrows=1
-let NERDTreeMinimalUI=1
-let NERDTreeChDirMode=2
-let NERDTreeAutoCenter=1
-let NERDTreeIgnore=['\.o$', '\.pyc$']
-au VimEnter * if !argc() | NERDTree | endif
-nmap <C-n> :NERDTreeToggle<CR>
-
 " Colorscheme setup
 colorscheme molokai
 
@@ -69,7 +60,14 @@ let g:neocomplete#enable_smart_case=1
 let g:neocomplete#sources#syntax#min_keyword_length=3
 
 " Ctrlp setup
+"
 set runtimepath^=~/.vim/bundle/ctrlp.vim
+let g:ctrlp_working_path_mode = 'ra'
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
+  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+  \}
 
 " Go tagbar setup
 let g:tagbar_type_go = {  
@@ -110,6 +108,10 @@ let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_check_on_open=1
 let g:syntastic_check_on_wq=0
+
+" Airline setup
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#fnamemod = ':t'
 
 " Vim-go setup
 let g:go_highlight_functions=1
