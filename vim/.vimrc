@@ -65,8 +65,8 @@ set runtimepath^=~/.vim/bundle/ctrlp.vim
 let g:ctrlp_working_path_mode = 'ra'
 set wildignore+=*/tmp/*,*.so,*.swp,*.zip
 let g:ctrlp_custom_ignore = {
-  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site)$',
-  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg)$',
+  \ 'dir':  '\v[\/](\.(git|hg|svn)|\_site|\Godeps)$',
+  \ 'file': '\v\.(exe|so|dll|class|png|jpg|jpeg|pyc)$',
   \}
 
 " Go tagbar setup
@@ -120,13 +120,13 @@ let g:go_highlight_structs=1
 let g:go_highlight_operators=1
 let g:go_fmt_command = "goimports"
 
-au FileType go nmap <leader>r <Plug>(go-run)
-au FileType go nmap <leader>b <Plug>(go-build)
-au FileType go nmap <leader>t <Plug>(go-test)
-au FileType go nmap <leader>c <Plug>(go-coverage)
-au FileType go nmap <leader>d <Plug>(go-doc-browser)
-au FileType go nmap <leader>i <Plug>(go-info)
-au FileType go nmap <leader>e <Plug>(go-rename)
+au FileType go nmap <leader>gr <Plug>(go-run)
+au FileType go nmap <leader>gb <Plug>(go-build)
+au FileType go nmap <leader>gt <Plug>(go-test)
+au FileType go nmap <leader>gc <Plug>(go-coverage)
+au FileType go nmap <leader>gd <Plug>(go-doc)
+au FileType go nmap <leader>gi <Plug>(go-info)
+au FileType go nmap <leader>ge <Plug>(go-rename)
 
 " Python-mode setup
 let g:pymode_lint=1
