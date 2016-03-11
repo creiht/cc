@@ -18,9 +18,9 @@ disabled/enabled easily.
 * Go to symbol/declaration with `:GoDef`
 * Look up documentation with `:GoDoc` inside Vim or open it in browser
 * Automatically import packages via `:GoImport` or plug it into autosave
-* Compile your package with `:GoBuild`, install it with `:GoInstall`
+* Compile your package with `:GoBuild`, install it with `:GoInstall` or test
+  them with `:GoTest` (also supports running single tests via `:GoTestFunc`)
 * Quickly execute your current file/files with `:GoRun`
-* Run `:GoTest` and see any errors in the quickfix window
 * Automatic `GOPATH` detection based on the directory structure (i.e. `gb`
   projects, `godep` vendored projects)
 * Change or display `GOPATH` with `:GoPath`
@@ -39,15 +39,24 @@ disabled/enabled easily.
 * Share your current code to [play.golang.org](http://play.golang.org) with `:GoPlay`
 * On-the-fly type information about the word under the cursor. Plug it into
   your custom vim function.
+* Go asm formatting on save
 * Tagbar support to show tags of the source code in a sidebar with `gotags`
 * Custom vim text objects such as `a function` or `inner function`
+* All commands support collecting and displaying errors in Vim's location
+  list.
+* A async launcher for the go command is implemented for neovim, fully async
+  building and testing.
+* Check the status of any async jobs in the statusline with `go#jobcontrol#Statusline()`
+* Integrated with the neovim terminal, launch `:GoRun` and other go commands
+  in their own new terminal.
 
 ## Install
 
-Vim-go follows the standard runtime path structure, so I highly recommend to use
-a common and well known plugin manager to install vim-go. Do not use vim-go with
-other Go oriented vim plugins. For Pathogen just clone the repo. For other plugin managers
-add the appropriate lines and execute the plugin's install command.
+Vim-go follows the standard runtime path structure, so I highly recommend to
+use a common and well known plugin manager to install vim-go. Do not use vim-go
+with other Go oriented vim plugins. For Pathogen just clone the repo. For other
+plugin managers add the appropriate lines and execute the plugin's install
+command.
 
 *  [Pathogen](https://github.com/tpope/vim-pathogen)
   * `git clone https://github.com/fatih/vim-go.git ~/.vim/bundle/vim-go`
@@ -62,8 +71,9 @@ Please be sure all necessary binaries are installed (such as `gocode`, `godef`,
 `goimports`, etc.). You can easily install them with the included
 `:GoInstallBinaries` command. If invoked, all necessary binaries will be
 automatically downloaded and installed to your `$GOBIN` environment (if not set
-it will use `$GOPATH/bin`). Note that this command requires `git` for fetching the individual Go
-packages. Additionally, use `:GoUpdateBinaries` to update the installed binaries.
+it will use `$GOPATH/bin`). Note that this command requires `git` for fetching
+the individual Go packages. Additionally, use `:GoUpdateBinaries` to update the
+installed binaries.
 
 ### Optional
 
@@ -163,6 +173,7 @@ To change it:
 let g:go_highlight_functions = 1
 let g:go_highlight_methods = 1
 let g:go_highlight_structs = 1
+let g:go_highlight_interfaces = 1
 let g:go_highlight_operators = 1
 let g:go_highlight_build_constraints = 1
 ```
@@ -199,7 +210,42 @@ let g:go_bin_path = expand("~/.gotools")
 let g:go_bin_path = "/home/fatih/.mypath"      "or give absolute path
 ```
 
-## Using with Syntastic
+### Location list navigation
+
+All commands support collecting and displaying errors in Vim's location list.
+
+Quickly navigate through these location lists with `:lne` for next error and `:lp`
+for previous.  You can also bind these to keys, for example:
+
+```vim
+map <C-n> :lne<CR>
+map <C-m> :lp<CR>
+```
+
+### Using with Neovim
+
+Run `:GoRun` in a new tab, horizontal split or vertical split terminal
+
+```vim
+au FileType go nmap <leader>rt <Plug>(go-run-tab)
+au FileType go nmap <Leader>rs <Plug>(go-run-split)
+au FileType go nmap <Leader>rv <Plug>(go-run-vertical)
+```
+
+By default new terminals are opened in a vertical split. To change it
+
+```vim
+let g:go_term_mode = "split"                   "or set to tab
+```
+
+By default the testing commands run asynchronously in the background and display results
+with `go#jobcontrol#Statusline()`. To make them run in a new terminal
+
+```vim
+let g:go_term_enabled = 1
+```
+
+### Using with Syntastic
 Sometimes when using both `vim-go` and `syntastic` Vim will start lagging while saving and opening
 files. The following fixes this:
 
