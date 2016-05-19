@@ -118,7 +118,7 @@ let g:syntastic_always_populate_loc_list=1
 let g:syntastic_auto_loc_list=1
 let g:syntastic_check_on_open=1
 let g:syntastic_check_on_wq=0
-let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
+"let g:syntastic_go_checkers = ['golint', 'govet', 'errcheck']
 let g:syntastic_mode_map = { 'mode': 'active', 'passive_filetypes': ['go'] }
 
 " Airline setup
@@ -139,6 +139,7 @@ au FileType go nmap <leader>gc <Plug>(go-coverage)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 au FileType go nmap <leader>gi <Plug>(go-info)
 au FileType go nmap <leader>ge <Plug>(go-rename)
+au FileType go nmap <leader>gg :SyntasticCheck<CR>
 
 " Python-mode setup
 let g:pymode_lint=1
