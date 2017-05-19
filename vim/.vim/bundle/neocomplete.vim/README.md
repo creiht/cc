@@ -1,11 +1,13 @@
 neocomplete
 ===========
-[![Stories in Ready](http://badge.waffle.io/Shougo/neocomplete.vim.png)](http://waffle.io/Shougo/neocomplete.vim)
 
 neocomplete is the abbreviation of "neo-completion with cache". It provides
 keyword completion system by maintaining a cache of keywords in the current
 buffer. neocomplete can be customized easily and has many more features than
 Vim's built-in completion.
+
+Note: If you use neovim, you should use deoplete instead.
+https://github.com/Shougo/deoplete.nvim
 
 ## Installation
 
@@ -24,6 +26,7 @@ If `:echo has("lua")` returns `1`, then you're done; otherwise, see below.
 
 ### Vim builds for Windows
 
+  [github release](https://github.com/vim/vim-win32-installer/releases)
 * [Vim 32bit](http://files.kaoriya.net/goto/vim73w32)
 * [Vim 64bit](http://files.kaoriya.net/goto/vim73w64)
 * [Vim 32bit alternative](http://tuxproject.de/projects/vim/)
@@ -72,7 +75,7 @@ Remember to specify `--with-lua` (or `--with-features=huge`).
 
 ### Vim for Cygwin:
 
-In a cygwin environment, Lua interface is supported by default.
+In a cygwin environment, the Lua interface is supported by default.
 
 If you want to make manually, you also need gcc and make.
 
@@ -112,7 +115,7 @@ A migration guide for existing users of neocomplcache is available:
 
 ![Completion with vimshell(http://github.com/Shougo/vimshell).](https://f.cloud.github.com/assets/41495/622458/01dbc660-cf43-11e2-85f1-326e7432b0a1.png)
 
-### Vim completion
+### Vim completion (provided by [neco-vim](https://github.com/Shougo/neco-vim))
 
 ![Vim completion.](https://f.cloud.github.com/assets/41495/622457/fe90ad5e-cf42-11e2-8e03-8f189b5e26e5.png)
 ![Vim completion with animation.](https://f.cloud.github.com/assets/214488/623496/94ed19a2-cf68-11e2-8d33-3aad8a39d7c1.gif)
@@ -121,7 +124,7 @@ A migration guide for existing users of neocomplcache is available:
 ## Configuration Examples
 
 ```vim
-"Note: This option must set it in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
+"Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
 " Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
 " Use neocomplete.
@@ -130,7 +133,6 @@ let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#enable_smart_case = 1
 " Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
 " Define dictionary.
 let g:neocomplete#sources#dictionary#dictionaries = {

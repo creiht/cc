@@ -71,6 +71,12 @@ endif
 if !exists("g:buffergator_mru_cycle_local_to_window")
     let g:buffergator_mru_cycle_local_to_window = 1
 endif
+if !exists("g:buffergator_tab_statusline")
+    let g:buffergator_tab_statusline = 1
+endif
+if !exists("g:buffergator_window_statusline")
+    let g:buffergator_window_statusline = 1
+endif
 " 1}}}
 
 " Script Data and Variables {{{1
@@ -142,9 +148,10 @@ let s:buffergator_default_catalog_sort_regime = "bufnum"
 
 " Catalog Display Regimes {{{2
 " ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-let s:buffergator_catalog_display_regimes = ['basename', 'filepath', 'bufname']
+let s:buffergator_catalog_display_regimes = ['basename', 'parentdir', 'filepath', 'bufname']
 let s:buffergator_catalog_display_regime_desc = {
             \ 'basename' : ["basename", "basename (followed by directory)"],
+            \ 'parentdir': ["parentdir", "basename (followed by first parent directory)"],
             \ 'filepath' : ["filepath", "full filepath"],
             \ 'bufname'  : ["bufname", "buffer name"],
             \ }
@@ -683,6 +690,7 @@ function! s:NewCatalogViewer(name, title)
         setlocal cursorline
         setlocal nospell
         setlocal matchpairs=""
+        setlocal filetype=buffergator
     endfunction
 
     " Sets buffer commands.
@@ -1177,6 +1185,7 @@ function! s:NewBufferCatalogViewer()
             """"" Selection: show target and switch focus
             noremap <buffer> <silent> <CR>        :<C-U>call b:buffergator_catalog_viewer.visit_target(!g:buffergator_autodismiss_on_select, 0, "")<CR>
             noremap <buffer> <silent> o           :<C-U>call b:buffergator_catalog_viewer.visit_target(!g:buffergator_autodismiss_on_select, 0, "")<CR>
+            noremap <buffer> <silent> <LeftMouse> :<C-U>call b:buffergator_catalog_viewer.visit_target(!g:buffergator_autodismiss_on_select, 0, "")<CR>
             noremap <buffer> <silent> s           :<C-U>call b:buffergator_catalog_viewer.visit_target(!g:buffergator_autodismiss_on_select, 0, "vert sb")<CR>
             noremap <buffer> <silent> <C-v>       :<C-U>call b:buffergator_catalog_viewer.visit_target(!g:buffergator_autodismiss_on_select, 0, "vert sb")<CR>
             noremap <buffer> <silent> i           :<C-U>call b:buffergator_catalog_viewer.visit_target(!g:buffergator_autodismiss_on_select, 0, "sb")<CR>
@@ -1288,6 +1297,10 @@ function! s:NewBufferCatalogViewer()
                 let l:line .= s:_format_align_left(l:bufinfo.basename, self.max_buffer_basename_len, " ")
                 let l:line .= "  "
                 let l:line .= l:bufinfo.parentdir
+            elseif self.display_regime == "parentdir"
+                let l:line .= s:_format_align_left(l:bufinfo.basename, self.max_buffer_basename_len, " ")
+                let l:line .= "  "
+                let l:line .= fnamemodify(l:bufinfo.parentdir, ':p:h:t')
             elseif self.display_regime == "filepath"
                 let l:line .= l:bufinfo.filepath
             elseif self.display_regime == "bufname"
@@ -1554,7 +1567,9 @@ function! s:NewBufferCatalogViewer()
 
     " Sets buffer status line.
     function! catalog_viewer.setup_buffer_statusline() dict
-        setlocal statusline=%{BuffergatorBuffersStatusLine()}
+        if g:buffergator_window_statusline
+            setlocal statusline=%{BuffergatorBuffersStatusLine()}
+        endif
     endfunction
 
     " Appends a line to the buffer and registers it in the line log.
@@ -1642,6 +1657,9 @@ function! s:NewTabCatalogViewer()
                 if self.display_regime == "basename"
                     let l:subline .= s:_format_align_left(fnamemodify(l:tabbufname, ":t"), 30, " ")
                     let l:subline .= fnamemodify(l:tabbufname, ":p:h")
+                elseif self.display_regime == "parentdir"
+                    let l:subline .= s:_format_align_left(fnamemodify(l:tabbufname, ":t"), 30, " ")
+                    let l:subline .= fnamemodify(l:tabbufname, ":p:h:t")
                 elseif self.display_regime == "filepath"
                     let l:subline .= fnamemodify(l:tabbufname, ":p")
                 elseif self.display_regime == "bufname"
@@ -1750,7 +1768,9 @@ function! s:NewTabCatalogViewer()
     endfunction
 
     function! catalog_viewer.setup_buffer_statusline() dict
-        setlocal statusline=%{BuffergatorTabsStatusLine()}
+        if g:buffergator_tab_statusline
+            setlocal statusline=%{BuffergatorTabsStatusLine()}
+        endif
     endfunction
 
     " return object
@@ -1848,6 +1868,8 @@ function! buffergator#UpdateBuffergator(event, affected)
     endif
     let l:calling = bufnr("%")
     let l:self_call = 0
+    let l:curr_winnr = winnr()
+    let l:prev_winnr = winnr("#")
     let l:buffergators = s:_find_buffers_with_var("is_buffergator_buffer",1)
     call s:_catalog_viewer.update_buffers_info()
 
@@ -1880,12 +1902,14 @@ function! buffergator#UpdateBuffergator(event, affected)
     endfor
     if exists("b:is_buffergator_buffer") && !l:self_call
         try
-            execute "wincmd p"
+            execute l:prev_winnr . "wincmd w"
+            execute l:curr_winnr . "wincmd w"
         catch //
         endtry
     elseif a:event == 'delete' && !l:self_call
         try
-            execute "wincmd ^"
+            execute l:prev_winnr . "wincmd w"
+            execute l:curr_winnr . "wincmd w"
         catch //
         endtry
     endif
