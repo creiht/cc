@@ -148,3 +148,4 @@ let g:pymode_lint_write=1
 let g:pymode_syntax=1
 let g:pymode_syntax_all = 1
 let g:pymode_folding = 0
+let g:pymode_breakpoint = 0
