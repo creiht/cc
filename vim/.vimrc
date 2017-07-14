@@ -139,7 +139,7 @@ au FileType go nmap <leader>gc <Plug>(go-coverage)
 au FileType go nmap <leader>gd <Plug>(go-doc)
 au FileType go nmap <leader>gi <Plug>(go-info)
 au FileType go nmap <leader>ge <Plug>(go-rename)
-au FileType go nmap <leader>gg :SyntasticCheck<CR>
+au FileType go nmap <leader>gg :SyntasticCheck go<CR>
 
 " Python-mode setup
 let g:pymode_lint=1
