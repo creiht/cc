@@ -142,10 +142,13 @@ au FileType go nmap <leader>ge <Plug>(go-rename)
 au FileType go nmap <leader>gg :SyntasticCheck go<CR>
 
 " Python-mode setup
-let g:pymode_lint=1
+let g:pymode_lint=0
 let g:pymode_lint_checker="pep8"
-let g:pymode_lint_write=1
+let g:pymode_lint_write=0
 let g:pymode_syntax=1
 let g:pymode_syntax_all = 1
 let g:pymode_folding = 0
 let g:pymode_breakpoint = 0
+
+" Ansible-vim setup
+au BufRead,BufNewFile *.yml set filetype=ansible
