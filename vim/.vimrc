@@ -159,6 +159,13 @@ let g:pymode_breakpoint = 0
 " Ansible-vim setup
 au BufRead,BufNewFile *.yml set filetype=ansible
 
-" Markdown setup
+" Pandoc/Markdown setup
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#toc#position = "left"
+
+" Pencil setup
+augroup pencil
+  autocmd!
+  autocmd FileType markdown,mkd call pencil#init({'wrap': 'soft', 'autoFormat': 0})
+  autocmd FileType text         call pencil#init({'wrap': 'hard', 'autoFormat': 0})
+augroup END
