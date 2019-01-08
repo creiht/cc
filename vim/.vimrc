@@ -65,7 +65,7 @@ let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 set completeopt-=preview
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
-autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
+autocmd FileType html setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
@@ -157,3 +157,7 @@ let g:pymode_breakpoint = 0
 
 " Ansible-vim setup
 au BufRead,BufNewFile *.yml set filetype=ansible
+
+" Markdown setup
+let g:pandoc#syntax#conceal#use = 0
+let g:pandoc#toc#position = "left"
