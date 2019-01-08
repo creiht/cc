@@ -31,6 +31,8 @@ set backspace=indent,eol,start
 let mapleader=","
 " easy turn off search highlight
 nnoremap <leader><space> :nohlsearch<CR>
+" Disable bell on windows 10
+set visualbell
 
 " Setup folding
 set foldenable
@@ -51,7 +53,9 @@ syntax on
 filetype plugin indent on
 
 " Colorscheme setup
-colorscheme molokai
+set t_Co=256
+"colorscheme molokai
+colorscheme 256_noir
 
 " Neocomplete setup
 let g:neocomplete#enable_at_startup=1
@@ -126,6 +130,7 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#fnamemod = ':t'
 
 " Vim-go setup
+let g:go_version_warning = 0
 let g:go_highlight_functions=1
 let g:go_highlight_methods=1
 let g:go_highlight_structs=1
