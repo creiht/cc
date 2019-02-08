@@ -156,9 +156,6 @@ let g:pymode_syntax_all = 1
 let g:pymode_folding = 0
 let g:pymode_breakpoint = 0
 
-" Ansible-vim setup
-au BufRead,BufNewFile *.yml set filetype=ansible
-
 " Pandoc/Markdown setup
 let g:pandoc#syntax#conceal#use = 0
 let g:pandoc#toc#position = "left"
@@ -169,3 +166,7 @@ augroup pencil
   autocmd FileType markdown,mkd call pencil#init({'wrap': 'soft', 'autoFormat': 0})
   autocmd FileType text         call pencil#init({'wrap': 'hard', 'autoFormat': 0})
 augroup END
+
+" Yaml support
+au! BufNewFile,BufReadPost *.{yaml,yml} set filetype=yaml foldmethod=indent
+autocmd FileType yaml setlocal ts=2 sts=2 sw=2 expandtab
